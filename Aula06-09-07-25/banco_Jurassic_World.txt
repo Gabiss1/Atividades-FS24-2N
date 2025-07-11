@@ -3,6 +3,7 @@ CREATE TABLE dinossauros (
 	nome_Dinossauro varchar(255) not null,
 	especie_Dinossauro varchar(255) not null,
 	dieta_Dinossauro varchar(255) not null,
-	idade_Estimada int not null,
+	idade_Dinossauro int not null,
+	idade_Estimada_Dinossauro int not null,
 	status_Cercado varchar(255)
 )	
