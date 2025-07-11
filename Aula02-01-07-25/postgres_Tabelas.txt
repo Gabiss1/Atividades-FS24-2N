@@ -1,96 +1,96 @@
 CREATE TABLE Primary_User (
-    User_ID BIGSERIAL PRIMARY KEY,
-    User_Name VARCHAR(255),
-    User_Email VARCHAR(255),
-    User_Address VARCHAR(255),
-    User_Contact VARCHAR(255),
-    User_Birth_Date DATE
+    User_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    User_Name VARCHAR(255) NOT NULL,
+    User_Email VARCHAR(255) NOT NULL,
+    User_Address VARCHAR(255) NOT NULL,
+    User_Contact VARCHAR(255) NOT NULL,
+    User_Birth_Date DATE NOT NULL
 );
 
 CREATE TABLE Medication (
-    Medication_ID BIGSERIAL PRIMARY KEY,
-    Medication_Name VARCHAR(255),
-    Medication_Category VARCHAR(255),
-    Dosage VARCHAR(255),
-    Time_Of_Usage VARCHAR(255),
-    Medication_Pharmaceutical_Form VARCHAR(20)
+    Medication_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Medication_Name VARCHAR(255) NOT NULL,
+    Medication_Category VARCHAR(255) NOT NULL,
+    Dosage VARCHAR(255) NOT NULL,
+    Time_Of_Usage VARCHAR(255) NOT NULL,
+    Medication_Pharmaceutical_Form VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Legal_Entity_Institute (
-    CNPJ VARCHAR(18) UNIQUE,
-    fk_User_ID INT PRIMARY KEY,
-    Institute_ID BIGSERIAL
+    CNPJ VARCHAR(18) UNIQUE NOT NULL,
+    fk_User_ID INT PRIMARY KEY NOT NULL,
+    Institute_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Natural_Person (
-    CPF VARCHAR(14) UNIQUE,
-    fk_User_ID BIGSERIAL PRIMARY KEY
+    CPF VARCHAR(14) UNIQUE NOT NULL,
+    fk_User_ID BIGSERIAL PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE Supplier (
-    Supplier_ID BIGSERIAL PRIMARY KEY,
-    Supplier_Name VARCHAR(255),
-    Supplier_Address VARCHAR(255),
-    Supplier_Contact VARCHAR(255),
-    fk_Institute_ID BIGSERIAL
+    Supplier_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Supplier_Name VARCHAR(255) NOT NULL,
+    Supplier_Address VARCHAR(255) NOT NULL,
+    Supplier_Contact VARCHAR(255) NOT NULL,
+    fk_Institute_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Customer (
-    Customer_ID BIGSERIAL PRIMARY KEY,
-    fk_User_ID BIGSERIAL,
-    fk_Institute_ID BIGSERIAL
+    Customer_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    fk_User_ID BIGSERIAL NOT NULL,
+    fk_Institute_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Appointment_Book_Natural_Person (
-    Appointment_ID BIGSERIAL PRIMARY KEY,
-    Appointment_End_Date DATE,
-    Appointment_Start_Date DATE,
-    fk_Natural_Person_ID BIGSERIAL,
-    fk_Medication_ID BIGSERIAL
+    Appointment_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Appointment_End_Date DATE NOT NULL,
+    Appointment_Start_Date DATE NOT NULL,
+    fk_Natural_Person_ID BIGSERIAL NOT NULL,
+    fk_Medication_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Appointment_Book_Institute (
-    Appointment_ID BIGSERIAL PRIMARY KEY,
-    Appointment_End_Date DATE,
-    Appointment_Start_Date DATE,
-    fk_Medication_ID BIGSERIAL,
-    fk_Institute_ID BIGSERIAL
+    Appointment_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Appointment_End_Date DATE NOT NULL,
+    Appointment_Start_Date DATE NOT NULL,
+    fk_Medication_ID BIGSERIAL NOT NULL,
+    fk_Institute_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Institutional_Stock (
-    Institutional_Stock_ID BIGSERIAL PRIMARY KEY,
-    fk_Institute_ID BIGSERIAL,
-    fk_Medication_ID BIGSERIAL
+    Institutional_Stock_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    fk_Institute_ID BIGSERIAL NOT NULL,
+    fk_Medication_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Supplier_Stock (
-    Supplier_Stock_ID BIGSERIAL PRIMARY KEY,
-    fk_Supplier_ID BIGSERIAL,
-    fk_Medication_ID BIGSERIAL
+    Supplier_Stock_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    fk_Supplier_ID BIGSERIAL NOT NULL,
+    fk_Medication_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Fiscal_Note (
-    Fiscal_Note_ID BIGSERIAL PRIMARY KEY,
-    fk_Medication_ID BIGSERIAL,
-    fk_Natural_Person_ID BIGSERIAL
+    Fiscal_Note_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    fk_Medication_ID BIGSERIAL NOT NULL,
+    fk_Natural_Person_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Reminder_Institute (
-    Reminder_ID BIGSERIAL PRIMARY KEY,
-    Reminder_Time DATE,
-    Reminder_Observations VARCHAR(255),
-    Reminder_Status BOOLEAN,
-    fk_Appointment_Book_Institute_ID BIGSERIAL,
-    fk_Customer_ID BIGSERIAL
+    Reminder_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Reminder_Time DATE NOT NULL,
+    Reminder_Observations VARCHAR(255) NOT NULL,
+    Reminder_Status BOOLEAN NOT NULL,
+    fk_Appointment_Book_Institute_ID BIGSERIAL NOT NULL,
+    fk_Customer_ID BIGSERIAL NOT NULL
 );
 
 CREATE TABLE Reminder_Natural_Person (
-    Reminder_ID BIGSERIAL PRIMARY KEY,
-    Reminder_Time DATE,
-    Reminder_Observation VARCHAR(255),
-    Reminder_Status BOOLEAN,
-    fk_Appointment_Book_Natural_Person_ID BIGSERIAL,
-    fk_Natural_Person_ID BIGSERIAL
+    Reminder_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Reminder_Time DATE NOT NULL,
+    Reminder_Observation VARCHAR(255) NOT NULL,
+    Reminder_Status BOOLEAN NOT NULL,
+    fk_Appointment_Book_Natural_Person_ID BIGSERIAL NOT NULL,
+    fk_Natural_Person_ID BIGSERIAL NOT NULL
 );
  
 ALTER TABLE Legal_Entity_Institute ADD CONSTRAINT FK_Legal_Entity_Institute_2
