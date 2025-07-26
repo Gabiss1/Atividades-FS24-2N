@@ -63,6 +63,7 @@ public class Main {
         emprestimoDAO.setEmprestimo(emprestimo1);
         emprestimoDAO.setEmprestimo(emprestimo2);
 
+        emprestimoDAO.updateEmprestimo(emprestimo3, 2, 1);
 
     }
 }
