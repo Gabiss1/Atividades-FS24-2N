@@ -46,7 +46,7 @@ public class EmprestimoDAO {
         }
     }
 
-    public void getEmprestimos(){
+    public List<Emprestimo> getEmprestimos(){
         String sql = "SELECT * FROM emprestimo";
         Connection conexao = null;
         PreparedStatement stmt = null;
@@ -80,10 +80,7 @@ public class EmprestimoDAO {
             }
         }
 
-        for (Emprestimo emprestimo: listaEmprestimos){
-            System.out.println("\nData Empréstimo: "+emprestimo.getData_emprestimo()+".\nData Devolução: " +
-                    emprestimo.getData_devolucao()+".\n");
-        }
+        return listaEmprestimos;
     }
 
     public void updateEmprestimo(Emprestimo emprestimo, int id_livro, int id_aluno){
@@ -117,7 +114,7 @@ public class EmprestimoDAO {
         }
     }
 
-    public void deletarEmprestimo(Emprestimo emprestimo, int id_aluno, int id_livro){
+    public void deletarEmprestimo(int id_aluno, int id_livro){
         String sql = "DELETE FROM emprestimo WHERE fk_id_livro = ? AND fk_id_aluno = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
@@ -129,10 +126,7 @@ public class EmprestimoDAO {
                 stmt.setInt(1, id_livro);
                 int linhasAfetadas = stmt.executeUpdate();
                 if (linhasAfetadas > 0) {
-                    System.out.println("\n--- Emprestimo com os dados: ---");
-                    System.out.println("\nData Empréstimo: "+emprestimo.getData_emprestimo()+".\nData Devolução: " +
-                            emprestimo.getData_devolucao()+".\n");
-                    System.out.println("\n--- Deletado com Sucesso! ---");
+                    System.out.println("\n--- Emprestimo deletado com Sucesso! ---");
                 } else {
                     System.out.println("Nenhum emprestimo encontrado com essas infosmações!");
                 }
