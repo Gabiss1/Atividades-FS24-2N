@@ -1,12 +1,10 @@
 
-import DAO.EmprestimoDAO;
-import DAO.LivroDAO;
+import Model.DAO.EmprestimoDAO;
+import Model.DAO.LivroDAO;
 import Model.Aluno;
-import DAO.AlunoDAO;
+import Model.DAO.AlunoDAO;
 import Model.Emprestimo;
 import Model.Livro;
-
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
