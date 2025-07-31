@@ -3,6 +3,7 @@ package Model.DAO;
 
 import Conexao.ConexaoPostgresDB;
 import Model.Livro;
+import Model.Livro;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -83,6 +84,40 @@ public class LivroDAO {
         }
 
         return listaLivros;
+    }
+
+    public Livro getLivroByID(int id){
+        String sql = "SELECT * FROM livro WHERE id_Livro = ?";
+        Connection conexao = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conexao = ConexaoPostgresDB.conectar();
+            if (conexao != null) {
+                stmt = conexao.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                System.out.println("\n--- Livros cadastrados no BD ---");
+                while (rs.next()) {
+                    String genero = rs.getString("genero_livro");
+                    String isbn = rs.getString("isbn_livro");
+                    String titulo = rs.getString("titulo_livro");
+                    String autor = rs.getString("autor_livro");
+
+                    return new Livro(id, titulo, autor, genero, isbn);
+                }
+            }
+        } catch(SQLException error){
+            System.out.println("Erro ao conectar com o banco de dados: " + error.getMessage());
+        } finally {
+            try{
+                if (rs != null) rs.close();
+                if(stmt != null) stmt.close();
+                if(conexao != null) fecharConexao(conexao);
+            } catch(SQLException error){
+                System.err.println("Erro ao fechar recursos após pesquisa: " + error.getMessage());
+            }
+        }
+        return null;
     }
 
     public void updateLivros(Livro livro, int id){

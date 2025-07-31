@@ -55,13 +55,5 @@ public class Main {
 
         //livro.deletarLivro(livro1, 2);
 
-        Emprestimo emprestimo1 = new Emprestimo(livro1, novoAluno1, "22/10/2021", "30/11/2021");
-        Emprestimo emprestimo2 = new Emprestimo(livro2, novoAluno1, "24/10/2021", "29/10/2021");
-        Emprestimo emprestimo3 = new Emprestimo(livro3, novoAluno1, "23/12/2021", "11/02/2022");
-        emprestimoDAO.setEmprestimo(emprestimo1);
-        emprestimoDAO.setEmprestimo(emprestimo2);
-
-        emprestimoDAO.updateEmprestimo(emprestimo3, 2, 1);
-
     }
 }

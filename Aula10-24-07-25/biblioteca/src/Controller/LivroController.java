@@ -42,6 +42,10 @@ public class LivroController {
         return livroDAO.getLivros();
     }
 
+    public Livro getLivroById(int id){
+        return livroDAO.getLivroByID(id);
+    }
+
     public void removerLivro(int id){
         livroDAO.deletarLivro(id);
     }

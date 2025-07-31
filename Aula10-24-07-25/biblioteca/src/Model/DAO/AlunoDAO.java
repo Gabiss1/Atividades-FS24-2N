@@ -14,7 +14,7 @@ import static Conexao.ConexaoPostgresDB.fecharConexao;
 
 public class AlunoDAO {
     public void setAluno(Aluno aluno){
-        String sql = "INSERT INTO aluno (nome_Aluno, idade_Aluno, contato_Aluno ) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO aluno (nome_Aluno, idade_Aluno, contato_Aluno) VALUES (?, ?, ?)";
         Connection conexao = null;
         PreparedStatement stmt = null;
 
@@ -75,6 +75,39 @@ public class AlunoDAO {
             }
         }
         return alunos;
+    }
+
+    public Aluno getAlunoByID(int id){
+        String sql = "SELECT * FROM aluno WHERE id_Aluno = ?";
+        Connection conexao = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conexao = ConexaoPostgresDB.conectar();
+            if (conexao != null) {
+                stmt = conexao.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                System.out.println("\n--- Alunos cadastrados no BD ---");
+                while (rs.next()) {
+                    String nome = rs.getString("nome_Aluno");
+                    int idade = rs.getInt("idade_Aluno");
+                    String contato = rs.getString("contato_Aluno");
+
+                    return new Aluno(id, nome, idade, contato);
+                }
+            }
+        } catch(SQLException error){
+            System.out.println("Erro ao conectar com o banco de dados: " + error.getMessage());
+        } finally {
+            try{
+                if (rs != null) rs.close();
+                if(stmt != null) stmt.close();
+                if(conexao != null) fecharConexao(conexao);
+            } catch(SQLException error){
+                System.err.println("Erro ao fechar recursos após pesquisa: " + error.getMessage());
+            }
+        }
+        return null;
     }
 
     public void atualizarAluno(Aluno aluno, int id){

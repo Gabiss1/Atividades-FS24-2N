@@ -41,6 +41,10 @@ public class AlunoController {
         return alunoDAO.getAlunos();
     }
 
+    public Aluno getAlunoById(int id){
+        return alunoDAO.getAlunoByID(id);
+    }
+
     public void removerAluno(int id){
         alunoDAO.removerAluno(id);
     }
