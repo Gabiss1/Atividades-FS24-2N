@@ -120,6 +120,41 @@ public class LivroDAO {
         return null;
     }
 
+    public List<Livro> getLivrosByTitulo(String titulo){
+        String sql = "SELECT * FROM livro WHERE titulo_Livro = ?";
+        Connection conexao = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Livro> livros = new ArrayList<>();
+        try {
+            conexao = ConexaoPostgresDB.conectar();
+            if (conexao != null) {
+                stmt = conexao.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                System.out.println("\n--- Livros cadastrados no BD ---");
+                while (rs.next()) {
+                    int id = rs.getInt("id_Livro");
+                    String genero = rs.getString("genero_livro");
+                    String isbn = rs.getString("isbn_livro");
+                    String autor = rs.getString("autor_livro");
+
+                    livros.add(new Livro(id, titulo, autor, genero, isbn));
+                }
+            }
+        } catch(SQLException error){
+            System.out.println("Erro ao conectar com o banco de dados: " + error.getMessage());
+        } finally {
+            try{
+                if (rs != null) rs.close();
+                if(stmt != null) stmt.close();
+                if(conexao != null) fecharConexao(conexao);
+            } catch(SQLException error){
+                System.err.println("Erro ao fechar recursos após pesquisa: " + error.getMessage());
+            }
+        }
+        return livros;
+    }
+
     public void updateLivros(Livro livro, int id){
         String sql = "UPDATE livro SET titulo_livro = ?, autor_livro = ?, genero_livro = ?, isbn_livro = ? WHERE id_livro = ?";
         Connection conexao = null;

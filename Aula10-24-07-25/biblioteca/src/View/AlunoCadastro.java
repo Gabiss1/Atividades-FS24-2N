@@ -150,4 +150,3 @@ public class AlunoCadastro extends JInternalFrame {
         btnBuscar.setEnabled(true); // Habilita o botão buscar novamente
     }
 }
-

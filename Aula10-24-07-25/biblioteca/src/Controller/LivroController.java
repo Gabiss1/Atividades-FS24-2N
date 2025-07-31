@@ -8,8 +8,8 @@ import java.util.List;
 public class LivroController {
     private LivroDAO livroDAO;
 
-    public LivroController(LivroDAO livroDAO) {
-        this.livroDAO = livroDAO;
+    public LivroController() {
+        this.livroDAO = new LivroDAO();
     }
 
     public void cadastrarLivro(String titulo, String autor, String genero, String isbn) throws Exception{
@@ -44,6 +44,10 @@ public class LivroController {
 
     public Livro getLivroById(int id){
         return livroDAO.getLivroByID(id);
+    }
+
+    public List<Livro> getLivrosByTitulo(String titulo){
+        return livroDAO.getLivrosByTitulo(titulo);
     }
 
     public void removerLivro(int id){

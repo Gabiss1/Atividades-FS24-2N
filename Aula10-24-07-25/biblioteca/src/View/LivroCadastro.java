@@ -117,7 +117,7 @@ public class LivroCadastro extends JInternalFrame{
             if (livro != null) {
                 txtId.setText(String.valueOf(livro.getId()));
                 txtTitulo.setText(livro.getTitulo());
-                textAutor.setText(String.valueOf(livro.getAutor()));
+                textAutor.setText(livro.getAutor());
                 textGenero.setText(livro.getGenero());
                 textIsbn.setText(livro.getIsbn());
                 livroIdParaEdicao = livro.getId(); // Define o ID para indicar que é uma edição

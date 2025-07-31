@@ -1,7 +1,9 @@
 package View;
 
 import Controller.EmprestimoController;
+import Model.Aluno;
 import Model.Emprestimo;
+import Model.Livro;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +22,7 @@ public class EmprestimoCadastro extends JInternalFrame{
         setSize(500, 350); // Tamanho da janela interna
         setLayout(new GridBagLayout()); // Layout para organizar os componentes
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 40, 5, 40); // Espaçamento entre os componentes
+        gbc.insets = new Insets(5, 40, 5, 20); // Espaçamento entre os componentes
         gbc.fill = GridBagConstraints.HORIZONTAL; // Preenche o espaço horizontalmente
 
         int row = 0; // Contador de linhas para o layout
@@ -103,33 +105,37 @@ public class EmprestimoCadastro extends JInternalFrame{
 
         // Se um ID foi passado, carrega o emprestimo para edição
         if (emprestimoIdParaEdicao != null) {
-            carregarEmprestimoParaEdicao(emprestimoIdParaEdicao);
+            carregarEmprestimoParaEdicao(emprestimoIdParaEdicao, txtIsbn.getText(), txtNome.getText(), txtContato.getText());
             txtId.setText(String.valueOf(emprestimoIdParaEdicao));
             btnBuscar.setEnabled(false); // Desabilita o botão buscar se já está editando
         }
     }
 
     private void buscarEmprestimo() {
-        String idStr = JOptionPane.showInputDialog(this, "Digite o ID do emprestimo para buscar:");
-        if (idStr != null && !idStr.trim().isEmpty()) {
+        // Dados do Emprestimo
+        int idStr = JOptionPane.showConfirmDialog(this, "ID Empréstimo", "Buscar Empréstimo", JOptionPane.OK_CANCEL_OPTION);
+        Livro livro = controller.getInfosLivro(idStr);
+        Aluno aluno = controller.getInfosAluno(idStr);
+        if (!String.valueOf(idStr).trim().isEmpty()) {
             try {
-                int id = Integer.parseInt(idStr);
-                carregarEmprestimoParaEdicao(id);
+                carregarEmprestimoParaEdicao(idStr, livro.getIsbn(), aluno.getNome(), aluno.getContato());
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "ID inválido. Por favor, digite um número.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-    private void carregarEmprestimoParaEdicao(int id) {
+    private void carregarEmprestimoParaEdicao(int id, String isbn, String nomeAluno, String contato) {
         try {
             Emprestimo emprestimo = controller.getEmprestimoById(id);
             if (emprestimo != null) {
                 txtId.setText(String.valueOf(emprestimo.getId_emprestimo()));
-                txtNome.setText(emprestimo.getNome());
-                textIdade.setText(String.valueOf(emprestimo.getIdade()));
-                txtContato.setText(emprestimo.getContato());
-                emprestimoIdParaEdicao = emprestimo.getId(); // Define o ID para indicar que é uma edição
+                txtNome.setText(nomeAluno);
+                txtContato.setText(contato);
+                txtIsbn.setText(isbn);
+                txtDataEmprestimo.setText(emprestimo.getData_emprestimo());
+                txtDevolucao.setText(emprestimo.getData_devolucao());
+                emprestimoIdParaEdicao = emprestimo.getId_emprestimo(); // Define o ID para indicar que é uma edição
             } else {
                 JOptionPane.showMessageDialog(this, "Emprestimo com ID " + id + " não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
                 limparCampos(); // Limpa os campos se não encontrar
@@ -141,15 +147,16 @@ public class EmprestimoCadastro extends JInternalFrame{
 
     private void salvarEmprestimo() {
         try {
-            String nome = txtNome.getText().trim();
-            int idade = Integer.parseInt(textIdade.getText().trim());
-            String contato = txtContato.getText().trim();
+            String data_emprestimo = txtDataEmprestimo.getText().trim();
+            String devolucao = txtDevolucao.getText().trim();
+            int fkAluno = controller.getFkAluno(txtNome.getText().trim(), txtContato.getText().trim());
+            int fkLivro = controller.getFkLivro(txtIsbn.getText().trim());
 
             if (emprestimoIdParaEdicao == null) { // Se emprestimoIdParaEdicao é null, é um novo cadastro
-                controller.cadastrarEmprestimo(nome, idade, contato);
+                controller.cadastrarEmprestimo(fkLivro, fkAluno, data_emprestimo, devolucao);
                 JOptionPane.showMessageDialog(this, "Emprestimo cadastrado com sucesso!");
             } else { // Caso contrário, é uma atualização
-                controller.atualizarEmprestimo(emprestimoIdParaEdicao, nome, idade, contato);
+                controller.atualizarEmprestimo(emprestimoIdParaEdicao, fkLivro, fkAluno, data_emprestimo, devolucao);
                 JOptionPane.showMessageDialog(this, "Emprestimo atualizado com sucesso!");
             }
             this.dispose(); // Fecha a janela após a operação bem-sucedida
@@ -162,7 +169,9 @@ public class EmprestimoCadastro extends JInternalFrame{
     private void limparCampos() {
         txtId.setText("");
         txtNome.setText("");
-        textIdade.setText("");
+        txtIsbn.setText("");
+        txtDataEmprestimo.setText("");
+        txtDevolucao.setText("");
         txtContato.setText("");
         emprestimoIdParaEdicao = null; // Reseta para modo de novo cadastro
         btnBuscar.setEnabled(true); // Habilita o botão buscar novamente

@@ -2,7 +2,6 @@ package Model.DAO;
 
 import Conexao.ConexaoPostgresDB;
 import Model.Emprestimo;
-import Model.Livro;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -140,6 +139,81 @@ public class EmprestimoDAO {
                     String devolucao = rs.getString("data_devolucao");
 
                     listaEmprestimos.add(new Emprestimo(id_livro, id_aluno, data_emprestimo, devolucao));
+                }
+            }
+        } catch(SQLException error){
+            System.out.println("Erro ao conectar com o banco de dados: " + error.getMessage());
+        } finally {
+            try{
+                if (rs != null) rs.close();
+                if(stmt != null) stmt.close();
+                if(conexao != null) fecharConexao(conexao);
+            } catch(SQLException error){
+                System.err.println("Erro ao fechar recursos após pesquisa: " + error.getMessage());
+            }
+        }
+
+        return listaEmprestimos;
+    }
+
+
+    public List<Emprestimo> getEmprestimosByAluno(int fkAluno){
+        String sql = "SELECT * FROM emprestimo WHERE fk_id_aluno = ?";
+        Connection conexao = null;
+        PreparedStatement stmt = null;
+        List<Emprestimo> listaEmprestimos = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            conexao = ConexaoPostgresDB.conectar();
+            if (conexao != null) {
+                stmt = conexao.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                System.out.println("\n--- Empréstimos cadastrados no BD ---");
+                while (rs.next()) {
+                    int id_livro = rs.getInt("fk_id_livro");
+                    int id = rs.getInt("id_emprestimo");
+                    String data_emprestimo = rs.getString("data_emprestimo");
+                    String devolucao = rs.getString("data_devolucao");
+
+                    listaEmprestimos.add(new Emprestimo(id, id_livro, fkAluno, data_emprestimo, devolucao));
+                }
+            }
+        } catch(SQLException error){
+            System.out.println("Erro ao conectar com o banco de dados: " + error.getMessage());
+        } finally {
+            try{
+                if (rs != null) rs.close();
+                if(stmt != null) stmt.close();
+                if(conexao != null) fecharConexao(conexao);
+            } catch(SQLException error){
+                System.err.println("Erro ao fechar recursos após pesquisa: " + error.getMessage());
+            }
+        }
+
+        return listaEmprestimos;
+    }
+
+
+    public List<Emprestimo> getEmprestimosByLivro(int fkLivro){
+        String sql = "SELECT * FROM emprestimo WHERE fk_id_livro = ?";
+        Connection conexao = null;
+        PreparedStatement stmt = null;
+        List<Emprestimo> listaEmprestimos = new ArrayList<>();
+        ResultSet rs = null;
+
+        try {
+            conexao = ConexaoPostgresDB.conectar();
+            if (conexao != null) {
+                stmt = conexao.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                System.out.println("\n--- Empréstimos cadastrados no BD ---");
+                while (rs.next()) {
+                    int id = rs.getInt("id_emprestimo");
+                    int id_aluno = rs.getInt("fk_id_aluno");
+                    String data_emprestimo = rs.getString("data_emprestimo");
+                    String devolucao = rs.getString("data_devolucao");
+
+                    listaEmprestimos.add(new Emprestimo(id, fkLivro, id_aluno, data_emprestimo, devolucao));
                 }
             }
         } catch(SQLException error){

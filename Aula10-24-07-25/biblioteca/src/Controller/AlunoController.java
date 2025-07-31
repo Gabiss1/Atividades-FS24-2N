@@ -2,15 +2,14 @@ package Controller;
 
 import Model.Aluno;
 import Model.DAO.AlunoDAO;
-import Model.Livro;
 
 import java.util.List;
 
 public class AlunoController {
     private AlunoDAO alunoDAO;
 
-    public AlunoController(AlunoDAO alunoDAO) {
-        this.alunoDAO = alunoDAO;
+    public AlunoController() {
+        this.alunoDAO = new AlunoDAO();
     }
 
     public void cadastrarAluno(String nome, int idade, String contato) throws Exception{
@@ -43,6 +42,10 @@ public class AlunoController {
 
     public Aluno getAlunoById(int id){
         return alunoDAO.getAlunoByID(id);
+    }
+
+    public List<Aluno> getAlunosByName(String nome){
+        return alunoDAO.getAlunosByName(nome);
     }
 
     public void removerAluno(int id){
