@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 public class ConexaoPostgresDB {
     private static final String URL = "jdbc:postgresql://localhost:5432/biblioteca";
     private static final String usuario = "postgres";
-    private static final String senha = "18042006Gab";
+    private static final String senha = "root";
 
     public static Connection conectar() {
         Connection conexao = null;
