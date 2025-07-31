@@ -150,7 +150,9 @@ public class EmprestimoCadastro extends JInternalFrame{
             String data_emprestimo = txtDataEmprestimo.getText().trim();
             String devolucao = txtDevolucao.getText().trim();
             int fkAluno = controller.getFkAluno(txtNome.getText().trim(), txtContato.getText().trim());
+            System.out.println(fkAluno);
             int fkLivro = controller.getFkLivro(txtIsbn.getText().trim());
+            System.out.println(fkLivro);
 
             if (emprestimoIdParaEdicao == null) { // Se emprestimoIdParaEdicao é null, é um novo cadastro
                 controller.cadastrarEmprestimo(fkLivro, fkAluno, data_emprestimo, devolucao);

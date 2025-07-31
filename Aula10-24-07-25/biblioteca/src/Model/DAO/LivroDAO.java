@@ -87,7 +87,7 @@ public class LivroDAO {
     }
 
     public Livro getLivroByID(int id){
-        String sql = "SELECT * FROM livro WHERE id_Livro = ?";
+        String sql = "SELECT * FROM livro WHERE id_livro = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -121,7 +121,7 @@ public class LivroDAO {
     }
 
     public List<Livro> getLivrosByTitulo(String titulo){
-        String sql = "SELECT * FROM livro WHERE titulo_Livro = ?";
+        String sql = "SELECT * FROM livro WHERE titulo_livro = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -133,7 +133,7 @@ public class LivroDAO {
                 rs = stmt.executeQuery();
                 System.out.println("\n--- Livros cadastrados no BD ---");
                 while (rs.next()) {
-                    int id = rs.getInt("id_Livro");
+                    int id = rs.getInt("id_livro");
                     String genero = rs.getString("genero_livro");
                     String isbn = rs.getString("isbn_livro");
                     String autor = rs.getString("autor_livro");

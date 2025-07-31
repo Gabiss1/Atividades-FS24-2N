@@ -14,7 +14,7 @@ import static Conexao.ConexaoPostgresDB.fecharConexao;
 
 public class AlunoDAO {
     public void setAluno(Aluno aluno){
-        String sql = "INSERT INTO aluno (nome_Aluno, idade_Aluno, contato_Aluno) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO aluno (nome_aluno, idade_aluno, contato_aluno) VALUES (?, ?, ?)";
         Connection conexao = null;
         PreparedStatement stmt = null;
 
@@ -43,7 +43,7 @@ public class AlunoDAO {
     }
 
     public List<Aluno> getAlunos(){
-        String sql = "SELECT * FROM aluno ORDER BY id_Aluno";
+        String sql = "SELECT * FROM aluno ORDER BY id_aluno";
         Connection conexao = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -55,10 +55,10 @@ public class AlunoDAO {
                 rs = stmt.executeQuery();
                 System.out.println("\n--- Alunos cadastrados no BD ---");
                 while (rs.next()) {
-                    int id = rs.getInt("id_Aluno");
-                    String nome = rs.getString("nome_Aluno");
-                    int idade = rs.getInt("idade_Aluno");
-                    String contato = rs.getString("contato_Aluno");
+                    int id = rs.getInt("id_aluno");
+                    String nome = rs.getString("nome_aluno");
+                    int idade = rs.getInt("idade_aluno");
+                    String contato = rs.getString("contato_aluno");
 
                     alunos.add(new Aluno(id, nome, idade, contato));
                 }
@@ -78,7 +78,7 @@ public class AlunoDAO {
     }
 
     public Aluno getAlunoByID(int id){
-        String sql = "SELECT * FROM aluno WHERE id_Aluno = ?";
+        String sql = "SELECT * FROM aluno WHERE id_aluno = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -89,9 +89,9 @@ public class AlunoDAO {
                 rs = stmt.executeQuery();
                 System.out.println("\n--- Alunos cadastrados no BD ---");
                 while (rs.next()) {
-                    String nome = rs.getString("nome_Aluno");
-                    int idade = rs.getInt("idade_Aluno");
-                    String contato = rs.getString("contato_Aluno");
+                    String nome = rs.getString("nome_aluno");
+                    int idade = rs.getInt("idade_aluno");
+                    String contato = rs.getString("contato_aluno");
 
                     return new Aluno(id, nome, idade, contato);
                 }
@@ -111,7 +111,7 @@ public class AlunoDAO {
     }
 
     public List<Aluno> getAlunosByName(String nome){
-        String sql = "SELECT * FROM aluno WHERE nome_Aluno = ?";
+        String sql = "SELECT * FROM aluno WHERE nome_aluno = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -123,9 +123,9 @@ public class AlunoDAO {
                 rs = stmt.executeQuery();
                 System.out.println("\n--- Alunos cadastrados no BD ---");
                 while (rs.next()) {
-                    int id = rs.getInt("id_Aluno");
-                    int idade = rs.getInt("idade_Aluno");
-                    String contato = rs.getString("contato_Aluno");
+                    int id = rs.getInt("id_aluno");
+                    int idade = rs.getInt("idade_aluno");
+                    String contato = rs.getString("contato_aluno");
 
                     alunos.add(new Aluno(id, nome, idade, contato));
                 }
@@ -145,7 +145,7 @@ public class AlunoDAO {
     }
 
     public void atualizarAluno(Aluno aluno, int id){
-        String sql = "UPDATE aluno SET nome_Aluno = ?, idade_Aluno = ?, contato_Aluno = ? WHERE id_Aluno = ?";
+        String sql = "UPDATE aluno SET nome_aluno = ?, idade_aluno = ?, contato_aluno = ? WHERE id_aluno = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         try {
@@ -176,7 +176,7 @@ public class AlunoDAO {
     }
 
     public void removerAluno(int id){
-        String sql = "DELETE FROM aluno WHERE id_Aluno = ?";
+        String sql = "DELETE FROM aluno WHERE id_aluno = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         try {
