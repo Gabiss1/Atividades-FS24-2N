@@ -29,7 +29,7 @@ public class AlunoController {
 
     public void atualizarAluno(int id, String nome, int idade, String contato) throws Exception {
         if (nome == null || nome.trim().isEmpty() || String.valueOf(idade).trim().isEmpty() || contato == null || contato.trim().isEmpty() || String.valueOf(id).trim().isEmpty()) {
-            throw new Exception("Todos os campos do dinossauro são obrigatórios e devem ser válidos.");
+            throw new Exception("Todos os campos do Aluno são obrigatórios e devem ser válidos.");
         }
 
         Aluno aluno = new Aluno(nome, idade, contato);

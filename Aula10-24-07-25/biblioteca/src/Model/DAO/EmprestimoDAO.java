@@ -150,8 +150,10 @@ public class EmprestimoDAO {
     }
 
 
-    public List<Emprestimo> getEmprestimosByAluno(int fkAluno){
-        String sql = "SELECT * FROM emprestimo WHERE fk_id_aluno = ?";
+    public List<Emprestimo> getEmprestimosByAluno(String nome){
+        String sql = "SELECT * FROM emprestimo, aluno WHERE \n" +
+                "emprestimo.fk_id_aluno = aluno.id_aluno \n" +
+                "AND aluno.nome_aluno = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         List<Emprestimo> listaEmprestimos = new ArrayList<>();
@@ -160,15 +162,17 @@ public class EmprestimoDAO {
             conexao = ConexaoPostgresDB.conectar();
             if (conexao != null) {
                 stmt = conexao.prepareStatement(sql);
+                stmt.setString(1, nome);
                 rs = stmt.executeQuery();
                 System.out.println("\n--- Empréstimos cadastrados no BD ---");
                 while (rs.next()) {
                     int id_livro = rs.getInt("fk_id_livro");
+                    int id_aluno = rs.getInt("fk_id_aluno");
                     int id = rs.getInt("id_emprestimo");
                     String data_emprestimo = rs.getString("data_emprestimo");
                     String devolucao = rs.getString("data_devolucao");
 
-                    listaEmprestimos.add(new Emprestimo(id, id_livro, fkAluno, data_emprestimo, devolucao));
+                    listaEmprestimos.add(new Emprestimo(id, id_livro, id_aluno , data_emprestimo, devolucao));
                 }
             }
         } catch(SQLException error){
@@ -187,8 +191,9 @@ public class EmprestimoDAO {
     }
 
 
-    public List<Emprestimo> getEmprestimosByLivro(int fkLivro){
-        String sql = "SELECT * FROM emprestimo WHERE fk_id_livro = ?";
+    public List<Emprestimo> getEmprestimosByLivro(String tituloLivro){
+        String sql = "SELECT * FROM emprestimo, livro WHERE emprestimo.fk_id_livro = livro.id_livro\n" +
+                "AND titulo_livro = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
         List<Emprestimo> listaEmprestimos = new ArrayList<>();
@@ -198,15 +203,17 @@ public class EmprestimoDAO {
             conexao = ConexaoPostgresDB.conectar();
             if (conexao != null) {
                 stmt = conexao.prepareStatement(sql);
+                stmt.setString(1, tituloLivro);
                 rs = stmt.executeQuery();
                 System.out.println("\n--- Empréstimos cadastrados no BD ---");
                 while (rs.next()) {
                     int id = rs.getInt("id_emprestimo");
                     int id_aluno = rs.getInt("fk_id_aluno");
+                    int id_livro = rs.getInt("fk_id_livro");
                     String data_emprestimo = rs.getString("data_emprestimo");
                     String devolucao = rs.getString("data_devolucao");
 
-                    listaEmprestimos.add(new Emprestimo(id, fkLivro, id_aluno, data_emprestimo, devolucao));
+                    listaEmprestimos.add(new Emprestimo(id, id_livro, id_aluno, data_emprestimo, devolucao));
                 }
             }
         } catch(SQLException error){
@@ -233,6 +240,7 @@ public class EmprestimoDAO {
             conexao = ConexaoPostgresDB.conectar();
             if (conexao != null) {
                 stmt = conexao.prepareStatement(sql);
+                stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 System.out.println("\n--- Empréstimos cadastrados no BD ---");
                 while (rs.next()) {

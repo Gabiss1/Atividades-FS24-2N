@@ -1,6 +1,8 @@
 package View;
 
 import Controller.EmprestimoController;
+import Model.DAO.AlunoDAO;
+import Model.DAO.LivroDAO;
 import Model.Emprestimo;
 
 import javax.swing.*;
@@ -14,7 +16,7 @@ public class ListaEmprestimos extends JInternalFrame {
     private JTable tabelaEmprestimos;
     private DefaultTableModel tableModel;
     private JButton btnAtualizar, btnRemover, btnBuscarPorAluno, btnBuscarPorLivro;
-    private JTextField txtBuscaIdAluno, txtBuscaIdLivro;
+    private JTextField txtBuscaNomeAluno, txtBuscaTituloLivro;
 
     public ListaEmprestimos(EmprestimoController controller) { // Altere o tipo do parâmetro
         super("Lista de Emprestimos", true, true, true, true);
@@ -35,18 +37,18 @@ public class ListaEmprestimos extends JInternalFrame {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel panelAcoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        txtBuscaIdAluno = new JTextField(5);
-        txtBuscaIdLivro = new JTextField(5);
-        btnBuscarPorAluno = new JButton("Buscar por Id Aluno");
-        btnBuscarPorLivro = new JButton("Buscar por Id Livro");
+        txtBuscaNomeAluno = new JTextField(5);
+        txtBuscaTituloLivro = new JTextField(5);
+        btnBuscarPorAluno = new JButton("Buscar por Nome Aluno");
+        btnBuscarPorLivro = new JButton("Buscar por Título Livro");
         btnAtualizar = new JButton("Atualizar Tabela");
         btnRemover = new JButton("Remover Selecionado");
 
-        panelAcoes.add(new JLabel("Id Aluno:"));
-        panelAcoes.add(txtBuscaIdAluno);
+        panelAcoes.add(new JLabel("Nome do Aluno:"));
+        panelAcoes.add(txtBuscaNomeAluno);
         panelAcoes.add(btnBuscarPorAluno);
-        panelAcoes.add(new JLabel("Id Livro:"));
-        panelAcoes.add(txtBuscaIdLivro);
+        panelAcoes.add(new JLabel("Título do Livro:"));
+        panelAcoes.add(txtBuscaTituloLivro);
         panelAcoes.add(btnBuscarPorLivro);
         panelAcoes.add(btnAtualizar);
         panelAcoes.add(btnRemover);
@@ -54,8 +56,8 @@ public class ListaEmprestimos extends JInternalFrame {
 
         btnAtualizar.addActionListener(e -> carregarEmprestimosNaTabela());
         btnRemover.addActionListener(e -> removerEmprestimoSelecionado());
-        btnBuscarPorAluno.addActionListener(e -> buscarEmprestimosPorIDAluno());
-        btnBuscarPorLivro.addActionListener(e -> buscarEmprestimosPorIDLivro());
+        btnBuscarPorAluno.addActionListener(e -> buscarEmprestimosPorNomeAluno());
+        btnBuscarPorLivro.addActionListener(e -> buscarEmprestimosPorTituloLivro());
 
     }
 
@@ -97,56 +99,58 @@ public class ListaEmprestimos extends JInternalFrame {
         }
     }
 
-    private void buscarEmprestimosPorIDAluno() {
-        String idBusca = txtBuscaIdAluno.getText().trim(); // Obtém o texto do campo de busca
+    private void buscarEmprestimosPorNomeAluno() {
+        String nomeBusca = txtBuscaNomeAluno.getText().trim(); // Obtém o texto do campo de busca
         tableModel.setRowCount(0); // Limpa a tabela
+        LivroDAO livro = new LivroDAO();
 
         List<Emprestimo> emprestimos;
-        if (idBusca.isEmpty()) {
+        if (nomeBusca.isEmpty()) {
             // Se o campo de busca estiver vazio, lista todos
             emprestimos = controller.listarEmprestimos();
         } else {
             // Caso contrário, busca por nome
-            emprestimos = controller.getEmprestimosByAluno(Integer.parseInt(idBusca));
+            emprestimos = controller.getEmprestimosByAluno(nomeBusca);
         }
 
-        if (emprestimos.isEmpty() && !idBusca.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nenhum empréstimo encontrado com o ID de Aluno: '" + idBusca + "'", "Busca", JOptionPane.INFORMATION_MESSAGE);
+        if (emprestimos.isEmpty() && !nomeBusca.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nenhum empréstimo encontrado com o ID de Aluno: '" + nomeBusca + "'", "Busca", JOptionPane.INFORMATION_MESSAGE);
         }
 
         for (Emprestimo emprestimo : emprestimos) {
             tableModel.addRow(new Object[]{
                     emprestimo.getId_emprestimo(),
-                    emprestimo.getFk_livro(),
-                    emprestimo.getFk_aluno(),
+                    livro.getLivroByID(emprestimo.getFk_livro()).getTitulo(),
+                    nomeBusca,
                     emprestimo.getData_emprestimo(),
                     emprestimo.getData_devolucao()
             });
         }
     }
 
-    private void buscarEmprestimosPorIDLivro() {
-        String idBusca = txtBuscaIdLivro.getText().trim(); // Obtém o texto do campo de busca
+    private void buscarEmprestimosPorTituloLivro() {
+        String tituloBusca = txtBuscaTituloLivro.getText().trim(); // Obtém o texto do campo de busca
         tableModel.setRowCount(0); // Limpa a tabela
+        AlunoDAO aluno = new AlunoDAO();
 
         List<Emprestimo> emprestimos;
-        if (idBusca.isEmpty()) {
+        if (tituloBusca.isEmpty()) {
             // Se o campo de busca estiver vazio, lista todos
             emprestimos = controller.listarEmprestimos();
         } else {
             // Caso contrário, busca por nome
-            emprestimos = controller.getEmprestimosByLivro(Integer.parseInt(idBusca));
+            emprestimos = controller.getEmprestimosByLivro(tituloBusca);
         }
 
-        if (emprestimos.isEmpty() && !idBusca.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nenhum emprestimo encontrado com o ID de Livro: '" + idBusca + "'", "Busca", JOptionPane.INFORMATION_MESSAGE);
+        if (emprestimos.isEmpty() && !tituloBusca.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nenhum emprestimo encontrado com o ID de Livro: '" + tituloBusca + "'", "Busca", JOptionPane.INFORMATION_MESSAGE);
         }
 
         for (Emprestimo emprestimo : emprestimos) {
             tableModel.addRow(new Object[]{
                     emprestimo.getId_emprestimo(),
-                    emprestimo.getFk_livro(),
-                    emprestimo.getFk_aluno(),
+                    tituloBusca,
+                    aluno.getAlunoByID(emprestimo.getFk_aluno()).getNome(),
                     emprestimo.getData_emprestimo(),
                     emprestimo.getData_devolucao()
             });

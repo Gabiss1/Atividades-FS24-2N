@@ -5,7 +5,6 @@ import Model.DAO.AlunoDAO;
 import Model.DAO.LivroDAO;
 import Model.DAO.EmprestimoDAO;
 import Model.Emprestimo;
-import Model.Emprestimo;
 
 import java.util.List;
 
@@ -18,17 +17,16 @@ public class EmprestimoController {
 
     public void cadastrarEmprestimo(int fk_id_livro, int fk_id_aluno, String data_emprestimo, String data_devolucao) throws Exception{
         if (String.valueOf(fk_id_aluno).trim().isEmpty()) {
-            throw new Exception("O nome é obrigatório.");
+            throw new Exception("Aluno não encontrado.");
         }
         if (String.valueOf(fk_id_livro).trim().isEmpty()) {
-            throw new Exception("Idade é obrigatório, caso não tenha saia daqui!");
+            throw new Exception("Livro não encontrado.");
         }
         if (data_emprestimo == null || data_emprestimo.trim().isEmpty()) {
-            throw new Exception("Contato é obrigatório");
+            throw new Exception("Data do Empréstimo é obrigatória");
         }
-
         if (data_devolucao == null || data_devolucao.trim().isEmpty()) {
-            throw new Exception("Contato é obrigatório");
+            throw new Exception("Data de Devolução é obrigatória");
         }
 
         Emprestimo emprestimo = new Emprestimo(fk_id_livro, fk_id_aluno, data_emprestimo, data_devolucao);
@@ -55,7 +53,7 @@ public class EmprestimoController {
 
     public void atualizarEmprestimo(int id, int fk_id_livro, int fk_id_aluno, String data_emprestimo, String data_devolucao) throws Exception {
         if (String.valueOf(fk_id_aluno).trim().isEmpty() || String.valueOf(fk_id_livro).trim().isEmpty() || data_emprestimo == null || data_emprestimo.trim().isEmpty() || data_devolucao == null || data_devolucao.trim().isEmpty()) {
-            throw new Exception("Todos os campos do dinossauro são obrigatórios e devem ser válidos.");
+            throw new Exception("Todos os campos do Empréstimo são obrigatórios e devem ser válidos.");
         }
 
         Emprestimo emprestimo = new Emprestimo(fk_id_livro, fk_id_aluno, data_emprestimo, data_devolucao);
@@ -70,12 +68,12 @@ public class EmprestimoController {
         return emprestimoDAO.getEmprestimoByID(id);
     }
 
-    public List<Emprestimo> getEmprestimosByAluno(int id){
-        return emprestimoDAO.getEmprestimosByAluno(id);
+    public List<Emprestimo> getEmprestimosByAluno(String nome){
+        return emprestimoDAO.getEmprestimosByAluno(nome);
     }
 
-    public List<Emprestimo> getEmprestimosByLivro(int id){
-        return emprestimoDAO.getEmprestimosByLivro(id);
+    public List<Emprestimo> getEmprestimosByLivro(String titulo){
+        return emprestimoDAO.getEmprestimosByLivro(titulo);
     }
 
     public void removerEmprestimo(int id){
