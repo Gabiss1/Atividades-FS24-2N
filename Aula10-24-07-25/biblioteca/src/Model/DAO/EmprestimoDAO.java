@@ -153,7 +153,7 @@ public class EmprestimoDAO {
     public List<Emprestimo> getEmprestimosByAluno(String nome){
         String sql = "SELECT * FROM emprestimo, aluno WHERE \n" +
                 "emprestimo.fk_id_aluno = aluno.id_aluno \n" +
-                "AND aluno.nome_aluno = ?";
+                "AND aluno.nome_aluno = ?"; // vc eh tri
         Connection conexao = null;
         PreparedStatement stmt = null;
         List<Emprestimo> listaEmprestimos = new ArrayList<>();

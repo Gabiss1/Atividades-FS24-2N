@@ -17,6 +17,8 @@ public class ListaEmprestimos extends JInternalFrame {
     private DefaultTableModel tableModel;
     private JButton btnAtualizar, btnRemover, btnBuscarPorAluno, btnBuscarPorLivro;
     private JTextField txtBuscaNomeAluno, txtBuscaTituloLivro;
+    private LivroDAO livro = new LivroDAO();
+    private AlunoDAO aluno = new AlunoDAO();
 
     public ListaEmprestimos(EmprestimoController controller) { // Altere o tipo do parâmetro
         super("Lista de Emprestimos", true, true, true, true);
@@ -31,6 +33,7 @@ public class ListaEmprestimos extends JInternalFrame {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+
         };
         tabelaEmprestimos = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(tabelaEmprestimos);
@@ -58,7 +61,6 @@ public class ListaEmprestimos extends JInternalFrame {
         btnRemover.addActionListener(e -> removerEmprestimoSelecionado());
         btnBuscarPorAluno.addActionListener(e -> buscarEmprestimosPorNomeAluno());
         btnBuscarPorLivro.addActionListener(e -> buscarEmprestimosPorTituloLivro());
-
     }
 
     private void carregarEmprestimosNaTabela() {
@@ -68,8 +70,8 @@ public class ListaEmprestimos extends JInternalFrame {
             // Adiciona cada emprestimo como uma nova linha na tabela
             tableModel.addRow(new Object[]{
                     emprestimo.getId_emprestimo(),
-                    emprestimo.getFk_livro(),
-                    emprestimo.getFk_aluno(),
+                    livro.getLivroByID(emprestimo.getFk_livro()).getTitulo(),
+                    aluno.getAlunoByID(emprestimo.getFk_aluno()).getNome(),
                     emprestimo.getData_emprestimo(),
                     emprestimo.getData_devolucao()
             });
@@ -100,9 +102,8 @@ public class ListaEmprestimos extends JInternalFrame {
     }
 
     private void buscarEmprestimosPorNomeAluno() {
-        String nomeBusca = txtBuscaNomeAluno.getText().trim(); // Obtém o texto do campo de busca
+        String nomeBusca = txtBuscaNomeAluno.getText().trim();// Obtém o texto do campo de busca
         tableModel.setRowCount(0); // Limpa a tabela
-        LivroDAO livro = new LivroDAO();
 
         List<Emprestimo> emprestimos;
         if (nomeBusca.isEmpty()) {
@@ -131,7 +132,6 @@ public class ListaEmprestimos extends JInternalFrame {
     private void buscarEmprestimosPorTituloLivro() {
         String tituloBusca = txtBuscaTituloLivro.getText().trim(); // Obtém o texto do campo de busca
         tableModel.setRowCount(0); // Limpa a tabela
-        AlunoDAO aluno = new AlunoDAO();
 
         List<Emprestimo> emprestimos;
         if (tituloBusca.isEmpty()) {
