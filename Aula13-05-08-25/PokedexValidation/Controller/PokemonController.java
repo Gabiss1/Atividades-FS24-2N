@@ -15,11 +15,12 @@ public class PokemonController {
 
     public void cadastrarPokemon(String nome, String tipoPrimario, String tipoSecundario, int nivel, int hpMaximo) throws Exception {
         // --- EXERCÍCIO: Adicionar validações aqui! ---
+        String segundoTipo = null;
         if (nome == null || nome.trim().isEmpty()) {
             throw new Exception("O nome do Pokémon é obrigatório.");
         }
 
-        if(!revisaoDeTexto(nome) && !nome.equalsIgnoreCase("porygon2")){
+        if(!revisaoDeTexto(nome) && !nome.trim().toLowerCase().equalsIgnoreCase("porygon2")){
             throw new Exception("O nome do pokémon não deve conter números!");
         }
 
@@ -35,13 +36,14 @@ public class PokemonController {
             if (tipoPrimario.toLowerCase().equals(tipoSecundario.toLowerCase()) || !revisaoDeTexto(tipoSecundario)) {
                 throw new Exception("O Tipo Secundário não pode ser igual ao Tipo Primário e também não pode conter números.");
             }
+            segundoTipo = tipoSecundario.toLowerCase();
         }
 
         if (nivel < 0 || nivel > 100 || String.valueOf(nivel).trim().isEmpty()) {
             throw new Exception("O nível não é válido.");
         }
 
-        if (hpMaximo < 0 || hpMaximo > 100 || String.valueOf(hpMaximo).trim().isEmpty()) {
+        if (hpMaximo < 0 || String.valueOf(hpMaximo).trim().isEmpty()) {
             throw new Exception("O HP máximo não é válido.");
         }
 
@@ -49,12 +51,9 @@ public class PokemonController {
             throw new Exception("Já existe um Pokémon com esse nome!");
         }
         // Exemplo de chamada do Model (já validado):
-        Pokemon pokemon = new Pokemon(nome, tipoPrimario, tipoSecundario, nivel, hpMaximo);
         try {
-            // Cadastro
-            Pokemon pokemon1 = new Pokemon(nome, tipoPrimario, tipoSecundario, nivel, hpMaximo);
-
-            pokemonDAO.inserir(pokemon1);
+            Pokemon pokemon = new Pokemon(nome.toLowerCase(), tipoPrimario.toLowerCase(), segundoTipo, nivel, hpMaximo);
+            pokemonDAO.inserir(pokemon);
         } catch (SQLException e) {
             throw new Exception("Erro ao cadastrar Pokémon no banco de dados: " + e.getMessage());
         }
@@ -63,9 +62,8 @@ public class PokemonController {
     public void atualizarPokemon(int id, String nome, String tipoPrimario, String tipoSecundario, int nivel, int hpMaximo) throws Exception {
         // --- EXERCÍCIO: Adicionar validações aqui! ---
         // Exemplo de chamada do Model (já validado):
-
-        // Validação de existência
         Pokemon existente = pokemonDAO.buscarPorId(id);
+        String segundoTipo = null;
         if (existente == null) {
             throw new Exception("Pokémon com ID " + id + " não encontrado para atualização.");
         }
@@ -74,7 +72,7 @@ public class PokemonController {
             throw new Exception("O nome do Pokémon é obrigatório.");
         }
 
-        if(!revisaoDeTexto(nome) && !nome.equalsIgnoreCase("porygon2")){
+        if(!revisaoDeTexto(nome) && !nome.trim().toLowerCase().equalsIgnoreCase("porygon2")){
             throw new Exception("O nome do pokémon não deve conter números!");
         }
 
@@ -90,13 +88,14 @@ public class PokemonController {
             if (tipoPrimario.toLowerCase().equals(tipoSecundario.toLowerCase()) || !revisaoDeTexto(tipoSecundario)) {
                 throw new Exception("O Tipo Secundário não pode ser igual ao Tipo Primário e também não pode conter números.");
             }
+            segundoTipo = tipoSecundario.toLowerCase();
         }
 
         if (nivel < 0 || nivel > 100 || String.valueOf(nivel).trim().isEmpty()) {
             throw new Exception("O nível não é válido.");
         }
 
-        if (hpMaximo < 0 || hpMaximo > 100 || String.valueOf(hpMaximo).trim().isEmpty()) {
+        if (hpMaximo < 0 || String.valueOf(hpMaximo).trim().isEmpty()) {
             throw new Exception("O HP máximo não é válido.");
         }
 
@@ -109,7 +108,7 @@ public class PokemonController {
         }
 
         // Atualização
-        Pokemon pokemonAtualizado = new Pokemon(id, nome, tipoPrimario, tipoSecundario, nivel, hpMaximo);
+        Pokemon pokemonAtualizado = new Pokemon(id, nome.toLowerCase(), tipoPrimario.toLowerCase(), segundoTipo , nivel, hpMaximo);
         try {
             pokemonDAO.atualizar(pokemonAtualizado);
         } catch (SQLException e) {

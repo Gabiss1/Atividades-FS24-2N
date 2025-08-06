@@ -94,7 +94,7 @@ public class ListaPokemonsPanel extends JInternalFrame {
         }
     }
 
-    private void buscarPokemonsPorNome(){
+    private void buscarPokemonsPorNome() {
         String nomeBusca = txtBuscaNome.getText().trim();
         tableModel.setRowCount(0);
 
