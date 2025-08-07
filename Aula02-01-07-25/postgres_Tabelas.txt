@@ -171,3 +171,107 @@ ALTER TABLE Reminder_Natural_Person ADD CONSTRAINT FK_Reminder_Natural_Person_2
 ALTER TABLE Reminder_Natural_Person ADD CONSTRAINT FK_Reminder_Natural_Person_3
     FOREIGN KEY (fk_Natural_Person_ID)
     REFERENCES Natural_Person (fk_User_ID);
+
+
+
+//////// Banco novo ///////////
+CREATE TABLE Primary_User (
+    User_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    User_Name VARCHAR(255) NOT NULL,
+    User_Email VARCHAR(255) NOT NULL,
+    User_Address VARCHAR(255) NOT NULL,
+    User_Contact VARCHAR(255) NOT NULL,
+);
+
+CREATE TABLE Medication (
+    Medication_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Medication_Name VARCHAR(255) NOT NULL,
+    Medication_Category VARCHAR(255) NOT NULL,
+    Dosage VARCHAR(255) NOT NULL,
+    Time_Of_Usage VARCHAR(255) NOT NULL,
+    Medication_Pharmaceutical_Form VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Legal_Entity_Institute (
+    CNPJ VARCHAR(18) UNIQUE NOT NULL,
+    fk_User_ID INT PRIMARY KEY NOT NULL,
+    Institute_ID BIGSERIAL NOT NULL
+);
+
+CREATE TABLE Natural_Person (
+    CPF VARCHAR(14) UNIQUE NOT NULL,
+	User_Birth_Date DATE NOT NULL;
+    fk_User_ID INT PRIMARY KEY NOT NULL
+);
+
+CREATE TABLE Appointment_Book_Natural_Person (
+    Appointment_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Appointment_End_Date DATE NOT NULL,
+    Appointment_Start_Date DATE NOT NULL,
+    fk_Natural_Person_ID INT NOT NULL,
+    fk_Medication_ID INT NOT NULL
+);
+
+CREATE TABLE Appointment_Book_Institute (
+    Appointment_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Appointment_End_Date DATE NOT NULL,
+    Appointment_Start_Date DATE NOT NULL,
+    fk_Medication_ID INT NOT NULL,
+    fk_Institute_ID INT NOT NULL
+);
+
+CREATE TABLE Reminder_Institute (
+    Reminder_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Reminder_Time DATE NOT NULL,
+    Reminder_Observations VARCHAR(255) NOT NULL,
+    Reminder_Status BOOLEAN NOT NULL,
+    fk_Appointment_Book_Institute_ID INT NOT NULL,
+    fk_Customer_ID INT NOT NULL
+);
+
+CREATE TABLE Reminder_Natural_Person (
+    Reminder_ID BIGSERIAL PRIMARY KEY NOT NULL,
+    Reminder_Time DATE NOT NULL,
+    Reminder_Observation VARCHAR(255) NOT NULL,
+    Reminder_Status BOOLEAN NOT NULL,
+    fk_Appointment_Book_Natural_Person_ID INT NOT NULL,
+    fk_Natural_Person_ID INT NOT NULL
+);
+ 
+ALTER TABLE Legal_Entity_Institute ADD CONSTRAINT FK_Legal_Entity_Institute_2
+    FOREIGN KEY (fk_User_ID)
+    REFERENCES Primary_User (User_ID)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Natural_Person ADD CONSTRAINT FK_Natural_Person_2
+    FOREIGN KEY (fk_User_ID)
+    REFERENCES Primary_User (User_ID)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Appointment_Book_Natural_Person ADD CONSTRAINT FK_Appointment_Book_Natural_Person_2
+    FOREIGN KEY (fk_Natural_Person_ID)
+    REFERENCES Natural_Person (fk_User_ID);
+ 
+ALTER TABLE Appointment_Book_Natural_Person ADD CONSTRAINT FK_Appointment_Book_Natural_Person_3
+    FOREIGN KEY (fk_Medication_ID)
+    REFERENCES Medication (Medication_ID);
+ 
+ALTER TABLE Appointment_Book_Institute ADD CONSTRAINT FK_Appointment_Book_Institute_2
+    FOREIGN KEY (fk_Medication_ID)
+    REFERENCES Medication (Medication_ID);
+ 
+ALTER TABLE Appointment_Book_Institute ADD CONSTRAINT FK_Appointment_Book_Institute_3
+    FOREIGN KEY (fk_Institute_ID)
+    REFERENCES Legal_Entity_Institute (fk_User_ID);
+ 
+ALTER TABLE Reminder_Institute ADD CONSTRAINT FK_Reminder_Institute_2
+    FOREIGN KEY (fk_Appointment_Book_Institute_ID)
+    REFERENCES Appointment_Book_Institute (Appointment_ID);
+ 
+ALTER TABLE Reminder_Natural_Person ADD CONSTRAINT FK_Reminder_Natural_Person_2
+    FOREIGN KEY (fk_Appointment_Book_Natural_Person_ID)
+    REFERENCES Appointment_Book_Natural_Person (Appointment_ID);
+ 
+ALTER TABLE Reminder_Natural_Person ADD CONSTRAINT FK_Reminder_Natural_Person_3
+    FOREIGN KEY (fk_Natural_Person_ID)
+    REFERENCES Natural_Person (fk_User_ID);
