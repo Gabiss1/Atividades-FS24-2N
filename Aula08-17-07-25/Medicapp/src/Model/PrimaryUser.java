@@ -9,23 +9,20 @@ public class PrimaryUser {
     private String email;
     private String address;
     private String contact;
-    private String birth_date;
 
-    public PrimaryUser(int id_user, String name, String email, String address, String contact, String birth_date) {
+    public PrimaryUser(int id_user, String name, String email, String address, String contact) {
         this.id_user = id_user;
         this.name = name;
         this.email = email;
         this.address = address;
         this.contact = contact;
-        this.birth_date = birth_date;
     }
 
-    public PrimaryUser(String name, String email, String address, String contact, String birth_date) {
+    public PrimaryUser(String name, String email, String address, String contact) {
         this.name = name;
         this.email = email;
         this.address = address;
         this.contact = contact;
-        this.birth_date = birth_date;
     }
 
     public PrimaryUser(int idUser) {
@@ -52,10 +49,6 @@ public class PrimaryUser {
         return contact;
     }
 
-    public String getBirth_date() {
-        return birth_date;
-    }
-
     public void setId_user(int id_user) {
         this.id_user = id_user;
     }
@@ -80,15 +73,20 @@ public class PrimaryUser {
     }
 
     public static class NaturalPerson extends PrimaryUser{
+        String birth_date;
         String cpf;
 
-        public NaturalPerson(int idUser, String cpf) {
-            super(idUser);
+        public NaturalPerson(int idUser, String name, String email, String address, String contact, String cpf, String birth_date) {
+            super(idUser, name, email, address, contact);
             this.cpf = cpf;
+            this.birth_date = birth_date;
         }
 
         public String getCpf() {
             return cpf;
+        }
+        public String getBirth_date() {
+            return birth_date;
         }
     }
 }

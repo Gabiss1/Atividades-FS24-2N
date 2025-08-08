@@ -6,12 +6,15 @@ import Model.PrimaryUser;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ConexaoMedicapp.Conexao.fecharConexao;
 
 public class PrimaryUserDAO {
-    public static void setUsers(PrimaryUser user){
-        String sql = "INSERT INTO Primary_User (User_Name, User_Email, User_Address, User_Contact, User_Birth_Date) VALUES (?, ?, ?, ?, ?)";
+
+    public void setUsers(PrimaryUser user){
+        String sql = "INSERT INTO Primary_User (User_Name, User_Email, User_Address, User_Contact) VALUES (?, ?, ?, ?, ?)";
         Connection conexao = null;
         PreparedStatement stmt = null;
 
@@ -23,9 +26,37 @@ public class PrimaryUserDAO {
                 stmt.setString(2,user.getEmail());
                 stmt.setString(3, user.getAddress());
                 stmt.setString(4, user.getContact());
+                int linhasAfetadas = stmt.executeUpdate();
+                if (linhasAfetadas > 0) {
+                    System.out.println("Usuario "+ user.getName() + " foi adicionado com sucesso!");
+                }
+            }
+        } catch (SQLException error) {
+            System.err.println("Erro ao inserir um Usuário: " + error.getMessage());
+        } finally {
+            try{
+                if (stmt != null) stmt.close();
+                if(conexao != null) fecharConexao(conexao);
+            } catch (SQLException error) {
+                System.err.println("Erro ao fechar conexao: " + error.getMessage());
+            }
+        }
+    }
+
+    public void setCpfUser(PrimaryUser.NaturalPerson user){
+        String sql = "INSERT INTO Natural_Person (CPF, User_Birth_Date, fk_User_ID) VALUES (?, ?, ?)";
+
+        Connection conexao = null;
+        PreparedStatement stmt = null;
+        try {
+            conexao = Conexao.conectar();
+            if (conexao != null) {
+                stmt = conexao.prepareStatement(sql);
+                stmt.setString(1, user.getName());
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = (Date) format.parse(user.getBirth_date());
-                stmt.setDate(5, date);
+                stmt.setDate(2, date);
+                stmt.setInt(3, user.getId_user());
                 int linhasAfetadas = stmt.executeUpdate();
                 if (linhasAfetadas > 0) {
                     System.out.println("Usuario "+ user.getName() + " foi adicionado com sucesso!");
@@ -43,11 +74,39 @@ public class PrimaryUserDAO {
         }
     }
 
-    public static void getUsers(){
+    public void setInstituteUser(PrimaryUser.LegalEntityInstitute user){
+        String sql = "INSERT INTO Legal_Entity_Institute (CNPJ, fk_User_ID) VALUES (?, ?)";
+        Connection conexao = null;
+        PreparedStatement stmt = null;
+        try {
+            conexao = Conexao.conectar();
+            if (conexao != null) {
+                stmt = conexao.prepareStatement(sql);
+                stmt.setString(1, user.getCnpj());
+                stmt.setInt(2,user.getId_user());
+                int linhasAfetadas = stmt.executeUpdate();
+                if (linhasAfetadas > 0) {
+                    System.out.println("Usuario "+ user.getName() + " foi adicionado com sucesso!");
+                }
+            }
+        } catch (SQLException error) {
+            System.err.println("Erro ao inserir o Usuário: " + error.getMessage());
+        } finally {
+            try{
+                if (stmt != null) stmt.close();
+                if(conexao != null) fecharConexao(conexao);
+            } catch (SQLException error) {
+                System.err.println("Erro ao fechar conexao: " + error.getMessage());
+            }
+        }
+    }
+
+    public List<PrimaryUser> getUsers(){
         String sql = "SELECT * FROM Primary_User ORDER BY User_ID";
         Connection conexao = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
+        List<PrimaryUser> users = new ArrayList<>();
         try {
             conexao = Conexao.conectar();
             if (conexao != null) {
@@ -62,9 +121,7 @@ public class PrimaryUserDAO {
                     String email = rs.getString("User_Email");
                     String address = rs.getString("User_Address");
                     String contact = rs.getString("User_Contact");
-                    Date birth_date = rs.getDate("User_Birth_Date");
-                    System.out.println("ID: "+id + ", Name: " + name + ", Email: " + email + ", Address: " + address+
-                            ", Contact: " + contact + ", Birth Date: " + birth_date);
+                    users.add(new PrimaryUser(id, name, email, address, contact));
                 }
                 if (!encontrouUsuario) {
                     System.out.println("Nenhum Usuário encontrado");
@@ -82,9 +139,10 @@ public class PrimaryUserDAO {
                 System.err.println("Erro ao fechar recursos após pesquisa: " + error.getMessage());
             }
         }
+        return users;
     }
 
-    public void updateUser(PrimaryUser user){
+    public void updateUser(PrimaryUser.NaturalPerson user){
         String sql = "UPDATE Primary_User SET User_Name = ?, User_Email = ?, User_Address = ?, User_Contact = ?, User_Birth_Date = ? WHERE User_ID = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;
@@ -121,7 +179,7 @@ public class PrimaryUserDAO {
         }
     }
 
-    public static void deleteUser(int id, PrimaryUser user){
+    public void deleteUser(int id, PrimaryUser user){
         String sql = "DELETE FROM Primary_User WHERE User_ID = ?";
         Connection conexao = null;
         PreparedStatement stmt = null;

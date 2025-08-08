@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 public class Conexao {
     private static String URL = "jdbc:postgresql://localhost:5432/medicapp_db";
     private static final String usuario = "postgres";
-    private static final String senha = "18042006Gab";
+    private static final String senha = "root";
 
     public static Connection conectar() {
         Connection conexao = null;
