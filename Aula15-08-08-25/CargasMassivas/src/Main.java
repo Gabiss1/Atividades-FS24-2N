@@ -1,5 +1,6 @@
 import Controller.PokemonController;
 import Model.Pokemon;
+import View.Lista151Pokes;
 import View.ListaPokemonsPanel;
 import View.PokemonForm;
 
@@ -48,7 +49,7 @@ public class Main extends JFrame {
 
         menuPokemons.add(itemCadastrarPokemon);
         menuPokemons.add(itemListarPokemons);
-        menuBar.add(itemInserirListaPokemons);
+        menuPokemons.add(itemInserirListaPokemons);
 
         menuBar.add(menuPokemons);
 
@@ -78,12 +79,8 @@ public class Main extends JFrame {
     }
 
     private void insereListaPokemons() throws SQLException {
-        List<Pokemon> listaPokemons = new ArrayList<>();
-        Pokemon treecko = new Pokemon("Treecko", "Grama", null, 15, 60);
-        Pokemon tailow = new Pokemon("Tailow", "Voador", "Normal", 14, 47);
-        listaPokemons.add(treecko);
-        listaPokemons.add(tailow);
-
+        Lista151Pokes lista = new Lista151Pokes();
+        List<Pokemon> listaPokemons = lista.gerarListaPokes();
         pokemonController.insereListaPokemns(listaPokemons);
     }
 
