@@ -54,7 +54,6 @@ public class PokemonDAO {
             }
             conn.commit();
             conn.setAutoCommit(true);
-
     }
 
     public void atualizar(Pokemon pokemon) throws SQLException {
