@@ -15,7 +15,7 @@ public class PokemonController {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-    // Validações de negócio (nome, tipo, etc.)
+    // Validações de negócio teste (nome, tipo, etc.)
             String segundoTipo = null;
             if (nome == null || nome.trim().isEmpty()) {
                 throw new Exception("O nome do Pokémon é obrigatório.");
