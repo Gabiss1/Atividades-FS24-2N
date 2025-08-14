@@ -9,6 +9,7 @@ import java.awt.*;
         import java.util.List;
 
 public class ListaPokemonsPanel extends JInternalFrame {
+        // teste
 //
 //    private PokemonController controller;
 //    private JTable tabelaPokemons;

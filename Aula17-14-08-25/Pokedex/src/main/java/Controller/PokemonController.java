@@ -78,4 +78,8 @@ public class PokemonController {
         }
         return true;
     }
+
+    public void listar(){
+
+    }
 }
