@@ -9,70 +9,68 @@ import java.awt.*;
         import java.util.List;
 
 public class ListaPokemonsPanel extends JInternalFrame {
-        // teste
-//
-//    private PokemonController controller;
-//    private JTable tabelaPokemons;
-//    private DefaultTableModel tableModel;
-//    private JButton btnAtualizar, btnRemover, btnBuscar, btnEditar;
-//    private JTextField txtBuscaNome;
-//
-//    public ListaPokemonsPanel(PokemonController controller) {
-//        super("Lista de Pokémons", true, true, true, true);
-//        this.controller = controller;
-//
-//        setSize(900, 500);
-//        setLayout(new BorderLayout());
-//
-//        String[] colunas = {"ID", "Nome", "Tipo Primário", "Tipo Secundário", "Nível", "HP Máximo"};
-//        tableModel = new DefaultTableModel(colunas, 0) {
-//            @Override
-//            public boolean isCellEditable(int row, int column) {
-//                return false;
-//            }
-//        };
-//        tabelaPokemons = new JTable(tableModel);
-//        JScrollPane scrollPane = new JScrollPane(tabelaPokemons);
-//        add(scrollPane, BorderLayout.CENTER);
-//
-//        JPanel panelAcoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        txtBuscaNome = new JTextField(20);
-//        btnBuscar = new JButton("Buscar por Nome");
-//        btnAtualizar = new JButton("Atualizar Tabela");
-//        btnRemover = new JButton("Remover Selecionado");
-//        btnEditar = new JButton("Editar Selecionado");
-//
-//        panelAcoes.add(new JLabel("Nome:"));
-//        panelAcoes.add(txtBuscaNome);
-//        panelAcoes.add(btnBuscar);
-//        panelAcoes.add(btnAtualizar);
-//        panelAcoes.add(btnRemover);
-//        panelAcoes.add(btnEditar);
-//        add(panelAcoes, BorderLayout.NORTH);
-//
-//        btnAtualizar.addActionListener(e -> carregarPokemonsNaTabela());
-//        btnRemover.addActionListener(e -> removerPokemonSelecionado());
-//        btnBuscar.addActionListener(e -> buscarPokemonsPorNome());
-//        btnEditar.addActionListener(e -> editarPokemonSelecionado());
-//
-//        carregarPokemonsNaTabela();
-//    }
-//
-//    private void carregarPokemonsNaTabela() {
-//        tableModel.setRowCount(0);
-//        List<Pokemon> pokemons = controller.listarTodosPokemons();
-//        for (Pokemon pokemon : pokemons) {
-//            tableModel.addRow(new Object[]{
-//                    pokemon.getId(),
-//                    pokemon.getNome(),
-//                    pokemon.getTipoPrimario(),
-//                    pokemon.getTipoSecundario() != null ? pokemon.getTipoSecundario() : "",
-//                    pokemon.getNivel(),
-//                    pokemon.getHpMaximo()
-//            });
-//        }
-//    }
-//
+    private PokemonController controller;
+    private JTable tabelaPokemons;
+    private DefaultTableModel tableModel;
+    private JButton btnAtualizar, btnRemover, btnBuscar, btnEditar;
+    private JTextField txtBuscaNome;
+
+    public ListaPokemonsPanel(PokemonController controller) {
+        super("Lista de Pokémons", true, true, true, true);
+        this.controller = controller;
+
+        setSize(900, 500);
+        setLayout(new BorderLayout());
+
+        String[] colunas = {"ID", "Nome", "Tipo Primário", "Tipo Secundário", "Nível", "HP Máximo"};
+        tableModel = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tabelaPokemons = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(tabelaPokemons);
+        add(scrollPane, BorderLayout.CENTER);
+
+        JPanel panelAcoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        txtBuscaNome = new JTextField(20);
+        btnBuscar = new JButton("Buscar por Nome");
+        btnAtualizar = new JButton("Atualizar Tabela");
+        btnRemover = new JButton("Remover Selecionado");
+        btnEditar = new JButton("Editar Selecionado");
+
+        panelAcoes.add(new JLabel("Nome:"));
+        panelAcoes.add(txtBuscaNome);
+        panelAcoes.add(btnBuscar);
+        panelAcoes.add(btnAtualizar);
+        panelAcoes.add(btnRemover);
+        panelAcoes.add(btnEditar);
+        add(panelAcoes, BorderLayout.NORTH);
+
+        btnAtualizar.addActionListener(e -> carregarPokemonsNaTabela());
+       // btnRemover.addActionListener(e -> removerPokemonSelecionado());
+       // btnBuscar.addActionListener(e -> buscarPokemonsPorNome());
+       // btnEditar.addActionListener(e -> editarPokemonSelecionado());
+
+        carregarPokemonsNaTabela();
+    }
+
+    private void carregarPokemonsNaTabela() {
+        tableModel.setRowCount(0);
+        List<Pokemon> pokemons = controller.listarTodosOsPokes();
+        for (Pokemon pokemon : pokemons) {
+            tableModel.addRow(new Object[]{
+                    pokemon.getId(),
+                    pokemon.getNome(),
+                    pokemon.getTipoPrimario(),
+                    pokemon.getTipoSecundario() != null ? pokemon.getTipoSecundario() : "",
+                    pokemon.getNivel(),
+                    pokemon.getHpMaximo()
+            });
+        }
+    }
+
 //    private void removerPokemonSelecionado() {
 //        int selectedRow = tabelaPokemons.getSelectedRow();
 //        if (selectedRow >= 0) {
@@ -94,7 +92,7 @@ public class ListaPokemonsPanel extends JInternalFrame {
 //            JOptionPane.showMessageDialog(this, "Selecione um Pokémon para remover.", "Aviso", JOptionPane.WARNING_MESSAGE);
 //        }
 //    }
-//
+
 //    private void buscarPokemonsPorNome() {
 //        String nomeBusca = txtBuscaNome.getText().trim();
 //        tableModel.setRowCount(0);
@@ -116,7 +114,7 @@ public class ListaPokemonsPanel extends JInternalFrame {
 //            });
 //        }
 //    }
-//
+
 //    private void editarPokemonSelecionado() {
 //        int selectedRow = tabelaPokemons.getSelectedRow();
 //        if (selectedRow >= 0) {

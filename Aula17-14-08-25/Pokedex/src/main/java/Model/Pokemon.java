@@ -60,6 +60,23 @@ public class Pokemon {
         return nivel;
     }
 
+    public Pokemon(int id, String nome, String tipoPrimario, String tipoSecundario, int nivel, int hpMaximo) {
+        this.id = id;
+        this.nome = nome;
+        this.tipoPrimario = tipoPrimario;
+        this.tipoSecundario = tipoSecundario;
+        this.nivel = nivel;
+        this.hpMaximo = hpMaximo;
+    }
+
+    public Pokemon(String nome, String tipoPrimario, String tipoSecundario, int nivel, int hpMaximo) {
+        this.nome = nome;
+        this.tipoPrimario = tipoPrimario;
+        this.tipoSecundario = tipoSecundario;
+        this.nivel = nivel;
+        this.hpMaximo = hpMaximo;
+    }
+
     public void setNivel(int nivel) {
         this.nivel = nivel;
     }

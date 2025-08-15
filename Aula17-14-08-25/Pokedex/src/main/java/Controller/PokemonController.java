@@ -60,7 +60,6 @@ public class PokemonController {
 
             session.persist(pokemon); // Salva o objeto no banco
             transaction.commit();
-
         }
     }
 
@@ -79,7 +78,35 @@ public class PokemonController {
         return true;
     }
 
-    public void listar(){
+    public void updatePoke(Pokemon pokemon){
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.update(pokemon);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 
+    public List<Pokemon> listarTodosOsPokes(){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            return session.createQuery("FROM Pokemon", Pokemon.class).list();
+        }
+    }
+
+    public Pokemon getById(int id){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            return session.get(Pokemon.class, id);
+        }
+    }
+
+    public void getByName(int id){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+
+        }
     }
 }
