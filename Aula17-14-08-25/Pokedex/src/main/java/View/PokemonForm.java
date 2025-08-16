@@ -138,7 +138,7 @@ public class PokemonForm extends JInternalFrame {
             }
 
             if (pokemonIdParaEdicao == null) {
-                controller.cadastrarPokemon(nome, tipoPrimario, tipoSecundario, nivel, hpMaximo);
+                //controller.cadastrarPokemon(nome, tipoPrimario, tipoSecundario, nivel, hpMaximo);
                 JOptionPane.showMessageDialog(this, "Pokémon cadastrado com sucesso!");
             } else {
                 controller.updatePoke(new Pokemon(pokemonIdParaEdicao, nome, tipoPrimario, tipoSecundario, nivel, hpMaximo));

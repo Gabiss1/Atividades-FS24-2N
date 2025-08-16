@@ -59,6 +59,7 @@ public class ListaPokemonsPanel extends JInternalFrame {
     private void carregarPokemonsNaTabela() {
         tableModel.setRowCount(0);
         List<Pokemon> pokemons = controller.listarTodosOsPokes();
+        System.out.println(pokemons.getFirst().getNome());
         for (Pokemon pokemon : pokemons) {
             tableModel.addRow(new Object[]{
                     pokemon.getId(),

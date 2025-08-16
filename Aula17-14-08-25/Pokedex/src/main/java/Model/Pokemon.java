@@ -77,6 +77,9 @@ public class Pokemon {
         this.hpMaximo = hpMaximo;
     }
 
+    public Pokemon() {
+    }
+
     public void setNivel(int nivel) {
         this.nivel = nivel;
     }

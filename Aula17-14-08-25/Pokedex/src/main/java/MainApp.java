@@ -4,6 +4,9 @@ import Model.Pokemon;
 import Util.HibernateUtil;
 import View.ListaPokemonsPanel;
 import View.PokemonForm;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -17,6 +20,10 @@ public class MainApp extends JFrame{
     public MainApp() {
         super("Sistema de Gerenciamento de Pokémons");
         this.controller = new PokemonController();
+
+//        Configuration config = new Configuration();
+//        config.configure("hibernate.cfg.xml");
+//        config.addAnnotatedClass(Pokemon.class);
 
         setSize(1000, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,7 +44,13 @@ public class MainApp extends JFrame{
         JMenuItem itemListarPokemons = new JMenuItem("Listar Pokémons");
         JMenuItem itemInserirListaPokemons = new JMenuItem("Inserir Lista de Pokémons");
 
-        itemCadastrarPokemon.addActionListener(e -> openPokemonForm(null));
+        itemCadastrarPokemon.addActionListener(e -> {
+            try {
+                openPokemonForm(null);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         itemListarPokemons.addActionListener(e -> openListaPokemonsPanel());
 
         menuPokemons.add(itemCadastrarPokemon);
@@ -57,7 +70,13 @@ public class MainApp extends JFrame{
         setJMenuBar(menuBar);
     }
 
-    private void openPokemonForm(Integer idPokemon) {
+    private void openPokemonForm(Integer idPokemon) throws Exception {
+        Pokemon poke = new Pokemon("Bounsweet", "Grama", null, 22, 65);
+        Pokemon poke2 = new Pokemon("Buizel", "Água", null, 22, 65);
+
+        controller.cadastrarPokemon(poke);
+        controller.cadastrarPokemon(poke2);
+
         PokemonForm pokemonForm = new PokemonForm(controller, idPokemon);
         desktopPane.add(pokemonForm);
         pokemonForm.setVisible(true);
@@ -71,14 +90,32 @@ public class MainApp extends JFrame{
         listaPokemons.toFront();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SwingUtilities.invokeLater(() -> {
             new MainApp().setVisible(true);
         });
+//        Configuration config = new Configuration();
+//        config.configure("hibernate.cfg.xml");
+//        config.addAnnotatedClass(Pokemon.class);
+//
+//        SessionFactory sessionFactory = config.buildSessionFactory();
+//        Session session = sessionFactory.openSession();
+//
+//        session.beginTransaction();
+//
+//
+//
+//
+//        session.save(poke);
+//        session.save(poke2);
+//        session.getTransaction().commit();
+//
+//        session.close();
+//        sessionFactory.close();
+
     }
 
     public static void cadastrar() throws Exception {
-        controller.cadastrarPokemon("Torkoal", "Fire", null, 22, 65);
     }
 
     public static void listar() throws Exception{
