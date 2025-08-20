@@ -51,7 +51,7 @@ public class ListaPokemonsPanel extends JInternalFrame {
         btnAtualizar.addActionListener(e -> carregarPokemonsNaTabela());
        // btnRemover.addActionListener(e -> removerPokemonSelecionado());
        // btnBuscar.addActionListener(e -> buscarPokemonsPorNome());
-       // btnEditar.addActionListener(e -> editarPokemonSelecionado());
+        btnEditar.addActionListener(e -> editarPokemonSelecionado());
 
         carregarPokemonsNaTabela();
     }
@@ -69,7 +69,18 @@ public class ListaPokemonsPanel extends JInternalFrame {
                     pokemon.getNivel(),
                     pokemon.getHpMaximo()
             });
+            System.out.println(pokemon.getId()+ " - "+ pokemon.getNome()+ " - "+ pokemon.getTipoPrimario()+ " - "+ pokemon.getTipoSecundario()+ " - "+ pokemon.getNivel()+ " - "+pokemon.getHpMaximo());
         }
+
+//        controller.removePoke(20);
+//        List<Pokemon> pokes = controller.listarTodosOsPokes();
+//
+//        for(Pokemon poke: pokes){
+//            System.out.println(poke.getId()+ " - "+ poke.getNome()+ " - "+ poke.getTipoPrimario()+ " - "+ poke.getTipoSecundario()+ " - "+ poke.getNivel()+ " - "+poke.getHpMaximo());
+//        }
+
+        long numeroDePokes = controller.contarPokemonsPorTipo("Planta");
+        System.out.println(numeroDePokes);
     }
 
 //    private void removerPokemonSelecionado() {
@@ -116,25 +127,25 @@ public class ListaPokemonsPanel extends JInternalFrame {
 //        }
 //    }
 
-//    private void editarPokemonSelecionado() {
-//        int selectedRow = tabelaPokemons.getSelectedRow();
-//        if (selectedRow >= 0) {
-//            int idPokemon = (int) tableModel.getValueAt(selectedRow, 0);
-//
-//            PokemonForm pokemonForm = new PokemonForm(controller, idPokemon);
-//            this.getDesktopPane().add(pokemonForm);
-//            pokemonForm.setVisible(true);
-//            pokemonForm.toFront();
-//
-//            pokemonForm.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-//                @Override
-//                public void internalFrameClosed(javax.swing.event.InternalFrameEvent e) {
-//                    carregarPokemonsNaTabela();
-//                }
-//            });
-//
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Selecione um Pokémon para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
-//        }
-//    }
+    private void editarPokemonSelecionado() {
+        int selectedRow = tabelaPokemons.getSelectedRow();
+        if (selectedRow >= 0) {
+            int idPokemon = (int) tableModel.getValueAt(selectedRow, 0);
+
+            PokemonForm pokemonForm = new PokemonForm(controller, idPokemon);
+            this.getDesktopPane().add(pokemonForm);
+            pokemonForm.setVisible(true);
+            pokemonForm.toFront();
+
+            pokemonForm.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
+                @Override
+                public void internalFrameClosed(javax.swing.event.InternalFrameEvent e) {
+                    carregarPokemonsNaTabela();
+                }
+            });
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um Pokémon para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 }

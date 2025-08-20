@@ -1,13 +1,11 @@
 package Controller;
 
 import Util.HibernateUtil;
-import jakarta.transaction.*;
 import Model.Pokemon;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,10 +95,25 @@ public class PokemonController {
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             System.out.println("Teste");
             Query<Pokemon> query = session.createQuery("FROM Pokemon", Pokemon.class);
+//            List<Pokemon> pokes = query.getResultList();
+//            for(Pokemon poke : pokes){
+//                System.out.println(poke.getId()+ " - "+ poke.getNome()+ " - "+ poke.getTipoPrimario()+ " - "+ poke.getTipoSecundario()+ " - "+ poke.getNivel()+ " - "+poke.getHpMaximo());
+//            }
+//            System.out.println(getById(180).getNome());
+//            updatePoke(new Pokemon(180, "Steenee", "Grama", "", 40, 120));
             return query.getResultList();
         } catch (Exception e){
             System.out.println("Erro: "+e.getMessage());
             return null;
+        }
+    }
+
+    public long contarPokemonsPorTipo(String tipo){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            Query<Long> query = session.createQuery("SELECT COUNT(*) FROM Pokemon WHERE tipoPrimario = :tipo", Long.class);// Consulta HQL
+            query.setParameter("tipo", tipo);
+            System.out.println("Pokes do tipo: "+tipo+ " = "+query.getSingleResult());
+            return query.getSingleResult();
         }
     }
 

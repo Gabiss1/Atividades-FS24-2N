@@ -15,11 +15,11 @@ import java.util.List;
 public class MainApp extends JFrame{
 
     private JDesktopPane desktopPane;
-    private static PokemonController controller;
+    private static PokemonController controller = new PokemonController();
 
     public MainApp() {
         super("Sistema de Gerenciamento de Pokémons");
-        this.controller = new PokemonController();
+        //this.controller = new PokemonController();
 
 //        Configuration config = new Configuration();
 //        config.configure("hibernate.cfg.xml");
@@ -33,6 +33,8 @@ public class MainApp extends JFrame{
         setContentPane(desktopPane);
 
         createMenuBar();
+
+        controller.contarPokemonsPorTipo("Agua");
     }
 
     private void createMenuBar() {
@@ -71,11 +73,11 @@ public class MainApp extends JFrame{
     }
 
     private void openPokemonForm(Integer idPokemon) throws Exception {
-        Pokemon poke = new Pokemon("Bounsweet", "Grama", null, 22, 65);
-        Pokemon poke2 = new Pokemon("Buizel", "Água", null, 22, 65);
-
-        controller.cadastrarPokemon(poke);
-        controller.cadastrarPokemon(poke2);
+//        Pokemon poke = new Pokemon("Bounsweet", "Grama", null, 22, 65);
+//        Pokemon poke2 = new Pokemon("Buizel", "Água", null, 22, 65);
+//
+//        controller.cadastrarPokemon(poke);
+//        controller.cadastrarPokemon(poke2);
 
         PokemonForm pokemonForm = new PokemonForm(controller, idPokemon);
         desktopPane.add(pokemonForm);
