@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 
 public class ConexaoPostgresDB {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/pokedex";
+    private static final String URL = "jdbc:postgresql://localhost:5432/Pokedex_DB";
     private static final String USUARIO = "postgres"; // O usuário que configuramos
-    private static final String SENHA = "root"; // A senha que configuramos
+    private static final String SENHA = "18042006Gab"; // A senha que configuramos
 
     public static Connection conectar() {
         Connection conexao = null; // Inicializa a conexão como nula
