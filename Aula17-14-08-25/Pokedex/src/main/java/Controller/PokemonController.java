@@ -125,7 +125,9 @@ public class PokemonController {
 
     public Pokemon getByName(String name){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            return session.get(Pokemon.class, name);
+            Query<Pokemon> query = session.createQuery("SELECT * FROM Pokemon WHERE nome = :nome", Pokemon.class);
+            query.setParameter("nome", name);
+            return query.getSingleResult();
         }
     }
 

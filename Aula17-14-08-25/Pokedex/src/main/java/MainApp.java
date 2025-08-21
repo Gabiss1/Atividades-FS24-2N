@@ -19,7 +19,7 @@ public class MainApp extends JFrame{
 
     public MainApp() {
         super("Sistema de Gerenciamento de Pokémons");
-        //this.controller = new PokemonController();
+//        this.controller = new PokemonController();
 
 //        Configuration config = new Configuration();
 //        config.configure("hibernate.cfg.xml");

@@ -50,7 +50,7 @@ public class ListaPokemonsPanel extends JInternalFrame {
 
         btnAtualizar.addActionListener(e -> carregarPokemonsNaTabela());
        // btnRemover.addActionListener(e -> removerPokemonSelecionado());
-       // btnBuscar.addActionListener(e -> buscarPokemonsPorNome());
+        btnBuscar.addActionListener(e -> buscarPokemonsPorNome());
         btnEditar.addActionListener(e -> editarPokemonSelecionado());
 
         carregarPokemonsNaTabela();
@@ -105,27 +105,26 @@ public class ListaPokemonsPanel extends JInternalFrame {
 //        }
 //    }
 
-//    private void buscarPokemonsPorNome() {
-//        String nomeBusca = txtBuscaNome.getText().trim();
-//        tableModel.setRowCount(0);
-//
-//        List<Pokemon> pokemons = controller.buscarPokemonPorNome(nomeBusca);
-//
-//        if (pokemons.isEmpty() && !nomeBusca.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Nenhum Pokémon encontrado com o nome: '" + nomeBusca + "'", "Busca", JOptionPane.INFORMATION_MESSAGE);
-//        }
-//
-//        for (Pokemon pokemon : pokemons) {
-//            tableModel.addRow(new Object[]{
-//                    pokemon.getId(),
-//                    pokemon.getNome(),
-//                    pokemon.getTipoPrimario(),
-//                    pokemon.getTipoSecundario() != null ? pokemon.getTipoSecundario() : "",
-//                    pokemon.getNivel(),
-//                    pokemon.getHpMaximo()
-//            });
-//        }
-//    }
+    private void buscarPokemonsPorNome() {
+        String nomeBusca = txtBuscaNome.getText().trim();
+        tableModel.setRowCount(0);
+
+        Pokemon pokemon = controller.getByName(nomeBusca);
+
+        if (pokemon == null && !nomeBusca.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nenhum Pokémon encontrado com o nome: '" + nomeBusca + "'", "Busca", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        assert pokemon != null;
+        tableModel.addRow(new Object[]{
+                    pokemon.getId(),
+                    pokemon.getNome(),
+                    pokemon.getTipoPrimario(),
+                    pokemon.getTipoSecundario() != null ? pokemon.getTipoSecundario() : "",
+                    pokemon.getNivel(),
+                    pokemon.getHpMaximo()
+            });
+    }
 
     private void editarPokemonSelecionado() {
         int selectedRow = tabelaPokemons.getSelectedRow();
